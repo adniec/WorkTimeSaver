@@ -1,6 +1,6 @@
 from datetime import timedelta
 import re
-from salary import *
+from WorkTimeSaver.salary import Salary
 
 
 class Record:

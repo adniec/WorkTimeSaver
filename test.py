@@ -1,6 +1,6 @@
 import unittest
-import WorkTimeSaver.salary as s
-import WorkTimeSaver.document as d
+from WorkTimeSaver.salary import Salary
+from WorkTimeSaver.document import Record, Document
 from datetime import datetime
 from os import remove
 
@@ -8,14 +8,14 @@ from os import remove
 class TestSalary(unittest.TestCase):
 
     def test_days_add(self):
-        salary = s.Salary()
+        salary = Salary()
         for _ in range(20):
             salary.update_work(480)
         self.assertEqual(salary.worktime, 9000)
         self.assertEqual(salary.days_at_work, 20)
 
     def test_salary_calculation(self):
-        salary = s.Salary()
+        salary = Salary()
         data = (
             (6000, (25000, 0)),
             (9750, (40625, 0)),
@@ -30,7 +30,7 @@ class TestSalary(unittest.TestCase):
             self.assertEqual(result, money)
 
     def test_tax_deduction(self):
-        salary = s.Salary()
+        salary = Salary()
         data = (
             ((25000, 0), 19250),
             ((40625, 0), 31281.25),
@@ -43,7 +43,7 @@ class TestSalary(unittest.TestCase):
             self.assertEqual(result, expected)
 
     def test_output(self):
-        salary = s.Salary()
+        salary = Salary()
         salary.days_at_work = 20
         salary.worktime = 9750
         output = "20\t\t\t\t162:30h\n\t\t\t\t40625.00NOK (16656.25PLN)\nAfter tax:\t\t\t31281.25NOK (12825.31PLN)\n\n" \
@@ -60,14 +60,14 @@ class TestHandler(unittest.TestCase):
     def test_new_record(self):
         start = datetime(2020, 2, 15, 8, 0)
         end = datetime.strptime('18:25', '%H:%M')
-        record = d.Record(start, end)
+        record = Record(start, end)
         expected = '15.02\t\t08:00-18:25\t10:25h'
         self.assertEqual(str(record), expected)
 
     def test_new_document(self):
         start = datetime(2020, 2, 15, 8, 0)
         end = datetime.strptime('18:25', '%H:%M')
-        document = d.Document(start, end)
+        document = Document(start, end)
         expected = '<Document "2020.txt" with new record <Work day 15.02 from 08:00 to 18:25 hour>>'
         self.assertEqual(str(document), expected)
 
@@ -106,7 +106,7 @@ class TestHandler(unittest.TestCase):
             lines.append(f'{record[0]}\t\t{record[1]}-{record[2]}\t{record[3]}\n')
             start = datetime.strptime(f'{record[0]}.19 {record[1]}', '%d.%m.%y %H:%M')
             end = datetime.strptime(record[2], '%H:%M')
-            document = d.Document(start, end)
+            document = Document(start, end)
             document.process_file()
 
         lines.extend((
@@ -121,7 +121,7 @@ class TestHandler(unittest.TestCase):
 
         start = datetime(2019, 9, 1, 8, 0)
         end = datetime.strptime('18:25', '%H:%M')
-        document = d.Document(start, end)
+        document = Document(start, end)
         document.process_file()
 
         with open('2019.txt', 'r') as f:

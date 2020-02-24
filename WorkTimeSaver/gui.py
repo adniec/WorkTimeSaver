@@ -1,7 +1,8 @@
 import tkinter as tk
 import tkinter.messagebox as msg
 from datetime import datetime
-from document import Document
+from WorkTimeSaver.document import Document
+import sys
 
 
 class Gui(tk.Tk):
@@ -66,4 +67,4 @@ class Gui(tk.Tk):
 
     def close(self, *_):
         self.destroy()
-        exit()
+        sys.exit()
