@@ -1,4 +1,5 @@
 from WorkTimeSaver.gui import Gui
+from sys import platform
 
 
 def main():
